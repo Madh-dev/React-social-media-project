@@ -3,9 +3,9 @@ import {useForm} from 'react-hook-form'
 import * as yup from 'yup'
 import {yupResolver} from '@hookform/resolvers/yup'
 import {addDoc, collection} from 'firebase/firestore'
-import { db,auth } from '../config/auth'
+import { db,auth } from '../../config/auth'
 import { useAuthState } from 'react-firebase-hooks/auth'
-
+import { useNavigate } from 'react-router-dom'
 
 
 interface CreateFormData {
@@ -13,6 +13,8 @@ interface CreateFormData {
     description: string
 }
 export const CreateForm = () =>{
+
+const navigate = useNavigate();
 
     const [user] = useAuthState(auth)
     const schema = yup.object().shape({
@@ -31,6 +33,7 @@ const onCreatePost = async (data:CreateFormData)=>{
         username: user?.displayName,
         userId: user?.uid,
     })
+    navigate('/');
 }
     return(
         <form onSubmit={handleSubmit(onCreatePost)}>
